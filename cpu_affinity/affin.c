@@ -7,32 +7,32 @@
 	static void *thread_1(void *ptr)
 	{
 		while (1) {
-			printf("\nThread 1");
-			sleep(1);
+			//printf("\nThread 1");
+			//sleep(1);
 		}
 	}	
  
 	static void *thread_2(void *ptr)
 	{
 		while (1) {
-			printf("\nThread 2");
-			sleep(1);
+			//printf("\nThread 2");
+			//sleep(1);
 		}
 	}
 
 	static void *thread_3(void *ptr)
 	{
 		while (1) {
-			printf("\nThread 3");
-			sleep(1);
+			//printf("\nThread 3");
+			//sleep(1);
 		}
 	}
 
 	static void *thread_4(void *ptr)
 	{
 		while (1) {
-			printf("\nThread 4");
-			sleep(1);
+			//printf("\nThread 4");
+			//sleep(1);
 		}
 	}
 	

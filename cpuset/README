@@ -1,0 +1,1 @@
+cpuset can be used to define the CPUs and memory nodes that a process can access. 

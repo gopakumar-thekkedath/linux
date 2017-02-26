@@ -1,0 +1,1 @@
+infinite as the name suggests, executes in an infinte loop. This program can be used to demonstrate that by default, the process will get schedled at all available CPUs and that numactl can pin a process to a specific core.

@@ -1,0 +1,5 @@
+Run about 20 instances of Affin
+isocpu one of the core
+
+Run task_set.sh, binding to one of the non isolcated cores
+Run task_set.sh, binding to isolated core 
