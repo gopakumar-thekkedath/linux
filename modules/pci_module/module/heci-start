@@ -1,0 +1,2 @@
+#!/bin/sh
+mknod /dev/hp_heci c 240 0
