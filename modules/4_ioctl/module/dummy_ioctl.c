@@ -14,7 +14,7 @@ static struct cdev dummy_cdev;
 
 static int my_open(struct inode *inode, struct file *file)
 {
-  printk(KERN_CRIT "\n my_open");
+  printk(KERN_CRIT "\n my_open, fops:%p", file->f_op);
   return 0;
 }
 
@@ -52,7 +52,7 @@ static int __init dummy_start(void)
     ret = register_chrdev_region(devid, 1, "dummy_module");
   } else {
     printk(KERN_CRIT "alloc_chrdev_region\n");
-    ret = alloc_chrdev_region(&devid, 0, 1, "dymmy_module");
+    ret = alloc_chrdev_region(&devid, 0, 1, "dummy_module");
     my_major = MAJOR(devid);
   }
 
@@ -61,7 +61,7 @@ static int __init dummy_start(void)
       return -1;
   }
 
-  printk(KERN_CRIT "\n Major Number=%u", my_major);
+  printk(KERN_CRIT "\n Major Number=%u my_fops:%p", my_major, &my_fops);
 
   cdev_init(&dummy_cdev, &my_fops);
   cdev_add(&dummy_cdev, devid, 1);
