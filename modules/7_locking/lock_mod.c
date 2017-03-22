@@ -9,6 +9,7 @@
 #include <linux/workqueue.h>
 #include <linux/mutex.h>
 #include <linux/spinlock.h>
+#include <linux/sched.h>
 
 struct timer_list my_timer1;
 struct timer_list my_timer2;
@@ -24,9 +25,13 @@ spinlock_t my_slock;
 void timer1_fun (unsigned long arg) 
 {
   printk(KERN_CRIT "%lu:timer 1 triggered, try to acquire lock\n", timer_cnt);
-   spin_lock(&my_slock);
+  spin_lock(&my_slock);
   printk(KERN_CRIT "timer 1, acquired spin_lock\n");
-  mdelay(3000);
+#ifdef SLEEP_IN_INTR_CTXT
+  schedule();
+#else
+  msleep(3000);
+#endif
   timer_cnt++;
   my_timer1.expires = jiffies + 50;
   add_timer (&my_timer1); /* setup the timer again */

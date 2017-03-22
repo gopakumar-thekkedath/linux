@@ -1,6 +1,5 @@
-obj-m += lock_mod.o
-#CFLAGS_lock_mod.o := -DUSE_TIMER -DSLEEP_IN_INTR_CTXT
-CFLAGS_lock_mod.o := -DUSE_TIMER
+obj-m += dummy_sleep.o
+
 all:
 	make -C /lib/modules/$(shell uname -r)/build M=$(PWD) modules
 

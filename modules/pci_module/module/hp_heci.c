@@ -176,6 +176,8 @@ heci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
   uint8_t irq;
   int ret;
   dev_t devid;
+  void *phys_addr;
+  void __iomem *virt_addr;
 
   printk(KERN_ALERT "\nProbed");
   pci_enable_device(pdev);
@@ -200,10 +202,28 @@ heci_probe(struct pci_dev *pdev, const struct pci_device_id *id)
     printk(KERN_ERR "\nHECI character driver reg failed");
     return ret;
   }
-  printk(KERN_CRIT "\n HECI, Major Number=%u", my_major);
+  printk(KERN_CRIT "\n HECI, Major Number=%u\n", my_major);
 
   cdev_init(&heci_cdev, &my_fops);
   cdev_add(&heci_cdev, devid, 1);
+
+  phys_addr = pci_resource_start(pdev, 0);
+  printk(KERN_CRIT "HECI, Physical Address Start :%p\n",phys_addr);
+ 
+  if (pci_enable_device(pdev)) {
+    virt_addr = ioremap_nocache(phys_addr, 128);
+    if (virt_addr) {
+	  uint8_t byte;
+
+	  byte = readb(virt_addr);
+	  printk(KERN_ERR "HECI, First byte:%x\n", byte);
+      iounmap(virt_addr);
+      pci_disable_device(pdev);
+    } else 
+	  printk(KERN_ERR "ioremap failed\n");
+	
+  }
+    
  
   return 0;
 }
