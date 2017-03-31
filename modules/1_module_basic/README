@@ -1,0 +1,42 @@
+Modules can be built either as part of the kernel build itself or separately.
+
+----------------------------------------------
+Sample Makefile
+
+ifneq($(KERNELRELEASE),)
+	obj-m := modulename.o
+else
+	KERNELDIR ?= /lib/modules/$(shell uname -r)/build
+endif
+
+default:
+	$(MAKE) -C $(KERNELDIR) M=$(PWD) modules
+---------------------------------------------
+
+In the above Makefile, if the module is built as part of kernel, the 'if' is true,
+if built separately, the KERNELDIR points to the path where kernel Makefile will be located.
+
+'M' option tells kernel, we are building external module. The 'kbuild' system knows, it needs
+to build modulename.ko and will look for modulename.c
+
+As part of build, kernel created modulename.mod.c, this file contains information about the module(version information
+and all).
+modulename.o and moduleame.mod.o are linked together to form modulename.ko
+
+module.symvers will contain any external symbols defined in the module but not present in module.symvers of kernel
+module.order, if we are compiling multiple modules together, will list the order in which the compilation and creation of .ko takes
+
+Module will use header files from /usr/src/linux-headers-<uname-r>
+
+=Verion information in module=
+moule.mod.c have the macro MODULE_INFO(vermagic, VERMAGIC_STRING)
+
+VERMAGIC_STRING is defined in the file vermagic.h as
+
+#define VERMAGIC_STRING                         \
+    UTS_RELEASE " "                         \
+    MODULE_VERMAGIC_SMP MODULE_VERMAGIC_PREEMPT             \
+    MODULE_VERMAGIC_MODULE_UNLOAD MODULE_VERMAGIC_MODVERSIONS   \
+    MODULE_ARCH_VERMAGIC
+
+UTS_RELEASE is defined in the file include/generated/utsrelease.h

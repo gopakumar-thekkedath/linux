@@ -35,7 +35,13 @@ static long  my_ioctl(struct file *file, unsigned int cmd, unsigned long arg)
       if (ret < 0)
         printk(KERN_CRIT "Sleep interrupted by signal\n");
       else
-        printk(KERN_CRIT "Woke up from sleep!\n");
+        printk(KERN_CRIT "Woke up from intr sleep!\n");
+      break;
+	case CMD_DUMMY_UNINTR_SLEEP:
+      printk(KERN_CRIT "ioctl CMD_UNINTR_SLEEP\n");
+      cond = false;
+      wait_event(my_queue, (cond == true));
+      printk(KERN_CRIT "Woke up from unintr sleep!\n");
       break;
     case CMD_DUMMY_COND_WAKE:
       printk(KERN_CRIT "ioctl CMD_COND_WAKE\n");
@@ -68,7 +74,7 @@ static int __init dummy_start(void)
     ret = register_chrdev_region(devid, 1, "dummy_module");
   } else {
     printk(KERN_CRIT "alloc_chrdev_region\n");
-    ret = alloc_chrdev_region(&devid, 0, 1, "dymmy_module");
+    ret = alloc_chrdev_region(&devid, 0, 1, "dummy_sleep");
     my_major = MAJOR(devid);
   }
 

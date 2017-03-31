@@ -15,7 +15,7 @@ void main(int argc, char **argv)
   int action;
 
   if (argc != 2) {
-    printf ("\nUsage communicator <action, 1 = sleep, 2 = wakeup>\n");
+    printf ("\nUsage communicator <action, 1 = sleep, 2 = unintr sleep,  3 = wakeup>\n");
     return;
   }
 
@@ -36,6 +36,12 @@ void main(int argc, char **argv)
 	  printf("\n ioctl success !!\n");
 	break;
   case 2:
+    if (ioctl(fd, CMD_DUMMY_UNINTR_SLEEP) != 0)
+      printf("\n ioctl failed !!\n");
+    else 
+	  printf("\n ioctl success !!\n");
+	break;
+  case 3:
     if (ioctl(fd, CMD_DUMMY_COND_WAKE) != 0)
       printf("\n ioctl failed !!\n");
     else 

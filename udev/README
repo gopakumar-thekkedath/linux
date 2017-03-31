@@ -1,0 +1,7 @@
+=load driver on detecting device=
+1) Build the module, create a symbolic link in /lib/modules/'uname-r'/xx folder
+2) Do depmod -a
+3) Make sure that the 'alias' string found when 'modinfo module_name' is issued, is added in /lib/modules/'uname-r'/modules.alias
+
+=udev rules=
+To add a new udev rule, add a file in /etc/udev/rules.d folder

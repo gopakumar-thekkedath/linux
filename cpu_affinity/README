@@ -1,0 +1,6 @@
+cat /proc/<pid>/task/<tid>/status
+
+top -H -p <pid>
+
+To view CPU core on which the thread was last run, press f + j
+To view each CPU core usage, press 1
